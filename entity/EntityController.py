@@ -3,26 +3,31 @@ from input.Keyboard import Keyboard
 
 class EntityController:
 
-    def __init__(self, entity, mouse, keyboard):
+    def __init__(self, entity, mouse, keyboard, physics_engine):
         self.entity = entity
         self.mouse = mouse
         self.keyboard = keyboard
+        self.physics_engine = physics_engine
 
-        self.move_speed = 3
+        self.body = self.physics_engine.get_physics_object(self.entity).body;
+
+        self.move_speed = 1200
 
     def update(self):
         
+        forceX = 0
+        forceY = 0
         if self.keyboard.is_pressed("up"):
-            self.entity.change_y = self.move_speed
+            forceY = self.move_speed
         elif self.keyboard.is_pressed("down"):
-            self.entity.change_y = -self.move_speed
-        else:
-            self.entity.change_y = 0
+            forceY = -self.move_speed
 
         if self.keyboard.is_pressed("right"):
-            self.entity.change_x = self.move_speed
+            forceX = self.move_speed
         elif self.keyboard.is_pressed("left"):
-            self.entity.change_x = -self.move_speed
-        else:
-            self.entity.change_x = 0
+            forceX = -self.move_speed
 
+        if forceX or forceY:
+            self.body.apply_force_at_local_point((forceX, forceY), (0, 0))
+        else:
+            self.body.apply_impulse_at_local_point(-self.body.velocity * 0.8)

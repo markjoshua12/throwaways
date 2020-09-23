@@ -8,6 +8,8 @@ from entity.EntityController import EntityController
 from tiles import Tile
 from level.LevelGen import LevelGen
 
+PLAYER_MAX_SPEED = 80
+
 class Level:
 
     def __init__(self, camera, mouse, keyboard):
@@ -34,15 +36,25 @@ class Level:
 
         self.sprite_list.append(self.player)
 
-        self.player_controller = EntityController(self.player, self.mouse, self.keyboard)
-
         self.tile_cursor = arcade.Sprite()
         self.tile_cursor.texture = Textures.get_texture(0, 4)
         self.tile_cursor.alpha = 128
 
         self.sprite_list.append(self.tile_cursor)
 
+        self.physics_engine = arcade.PymunkPhysicsEngine(damping=0.4)
+
+        self.physics_engine.add_sprite(self.player,
+                               friction=1.0,
+                               mass=4.0,
+                               moment=arcade.PymunkPhysicsEngine.MOMENT_INF,
+                               collision_type="player",
+                               max_horizontal_velocity=PLAYER_MAX_SPEED,
+                               max_vertical_velocity=PLAYER_MAX_SPEED)
+
         self.world_mouse = (0, 0)
+
+        self.player_controller = EntityController(self.player, self.mouse, self.keyboard, self.physics_engine)
 
     def update(self, delta):
         
@@ -53,6 +65,8 @@ class Level:
         self.tile_cursor.left = int(self.world_mouse[0] / Tile.TILE_SIZE) * Tile.TILE_SIZE
         self.tile_cursor.bottom = int(self.world_mouse[1] / Tile.TILE_SIZE) * Tile.TILE_SIZE
 
+        self.physics_engine.step()
+
         player_angle = math.degrees(math.atan2(
             self.world_mouse[1] - self.player.center_y,
             self.world_mouse[0] - self.player.center_x)
@@ -60,7 +74,7 @@ class Level:
 
         self.player.angle = player_angle
 
-        self.sprite_list.update()
+        # self.sprite_list.update()
 
         if self.keyboard.is_pressed("attack"):
             self.level_gen.offsetx = self.player.center_x / Tile.TILE_SIZE

@@ -33,7 +33,19 @@ class GameWindow(arcade.Window):
 
         self.level = Level(self.camera, self.mouse, self.keyboard)
 
-        self.debug_text = TextList.create_text_list("Hello World!", 4, 4)
+        self.debug = True
+
+        if self.debug:
+            import psutil
+            import os
+
+            self.frames = 0
+            self.debug_time = 0
+
+            self.debug_text = ""
+            self.debug_text_list = TextList.create_text_list("Hello World!", 12, 12)
+
+            self.process = psutil.Process(os.getpid())
 
     def on_update(self, delta):
 
@@ -44,6 +56,22 @@ class GameWindow(arcade.Window):
 
         self.level.update(delta)
 
+        if self.debug:
+
+            self.frames += 1
+            self.debug_time += delta
+
+            if self.debug_time >= 1:
+                self.debug_text = f"FPS: {self.frames} | Using: {round(self.process.memory_info().rss / 1000000, 2)} MB"
+
+                print(self.debug_text)
+
+                TextList.empty_text_list(self.debug_text_list)
+                TextList.add_to_text_list(self.debug_text, self.debug_text_list, 12, 12)
+                
+                self.debug_time -= 1
+                self.frames = 0
+
     def on_draw(self):
         arcade.start_render()
 
@@ -52,9 +80,9 @@ class GameWindow(arcade.Window):
         self.level.draw()
 
         # self.camera.reset_viewport()
-        self.set_viewport(0, self.width * 0.2, 0, self.height * 0.2)
+        self.set_viewport(0, self.width * 0.5, 0, self.height * 0.5)
 
-        self.debug_text.draw(filter=gl.GL_NEAREST)
+        self.debug_text_list.draw(filter=gl.GL_NEAREST)
 
     def on_resize(self, width, height):
         self.camera.resize(width, height)

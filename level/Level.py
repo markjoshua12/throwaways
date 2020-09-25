@@ -5,6 +5,10 @@ import math
 from graphics import Textures
 
 from entity.EntityController import EntityController
+from entity.Ship import Ship
+from entity.Entity import Entity
+from entity.Mob import Mob
+
 from tiles import Tile
 from level.LevelGen import LevelGen
 
@@ -23,16 +27,18 @@ class Level:
 
         self.tiles = [0] * self.width * self.height
 
+        self.sprite_list = arcade.SpriteList(use_spatial_hash=True, spatial_hash_cell_size=32)
+        self.ship_list = arcade.SpriteList(use_spatial_hash=True)
+        self.effect_list = arcade.SpriteList()
+        self.tile_sprite_list = None
+
         self.level_gen = LevelGen(self)
 
         self.level_gen.generate_level()
 
-        self.sprite_list = arcade.SpriteList(use_spatial_hash=True)
-
-        self.player = arcade.Sprite()
+        self.player = Mob(self.width * 0.5 * Tile.TILE_SIZE, self.height * 0.5 * Tile.TILE_SIZE)
         self.player.texture = Textures.SPRITESHEET_16[0]
-        self.player.center_x = self.width * 0.5 * Tile.TILE_SIZE
-        self.player.center_y = self.height * 0.5 * Tile.TILE_SIZE
+        self.player.level = self
 
         self.sprite_list.append(self.player)
 
@@ -40,9 +46,17 @@ class Level:
         self.tile_cursor.texture = Textures.get_texture(0, 4)
         self.tile_cursor.alpha = 128
 
-        self.sprite_list.append(self.tile_cursor)
+        self.effect_list.append(self.tile_cursor)
 
+        self.ship = Ship(self.player.center_x + 16, self.player.center_y, self.ship_list)
+        self.ship.level = self
+        self.ship.change_x = 0.2
 
+        self.ship.add_tile(self.ship.center_x, self.ship.center_y, 0, False)
+
+        self.sprite_list.append(self.ship)
+
+        self.tile_type = 0
 
         self.world_mouse = (0, 0)
 
@@ -54,9 +68,9 @@ class Level:
 
         self.world_mouse = self.camera.screen_to_world_space(self.mouse.x, self.mouse.y)
 
-        self.tile_cursor.left = int(self.world_mouse[0] / Tile.TILE_SIZE) * Tile.TILE_SIZE
-        self.tile_cursor.bottom = int(self.world_mouse[1] / Tile.TILE_SIZE) * Tile.TILE_SIZE
 
+        self.tile_cursor.center_x = self.ship.center_x - math.floor((self.ship.center_x - self.world_mouse[0] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
+        self.tile_cursor.center_y = self.ship.center_y - math.floor((self.ship.center_y - self.world_mouse[1] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
 
         player_angle = math.degrees(math.atan2(
             self.world_mouse[1] - self.player.center_y,
@@ -65,7 +79,9 @@ class Level:
 
         self.player.angle = player_angle
 
-        # self.sprite_list.update()
+
+        self.sprite_list.update()
+        self.ship_list.update()
 
         if self.keyboard.is_pressed("attack"):
             self.level_gen.offsetx = self.player.center_x / Tile.TILE_SIZE
@@ -77,6 +93,7 @@ class Level:
     def draw(self):
 
         self.tile_sprite_list.draw(filter=gl.GL_NEAREST)
+        self.ship_list.draw(filter=gl.GL_NEAREST)
         self.sprite_list.draw(filter=gl.GL_NEAREST)
 
         # draw_start = self.camera.screen_to_world_space(0, 0)

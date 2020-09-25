@@ -1,10 +1,12 @@
 import arcade
 import noise
+import random
 
 from graphics import Textures
 
 from tiles import Tile
 
+from entity.Shark import Shark
 
 class LevelGen:
 
@@ -67,3 +69,15 @@ class LevelGen:
                     tileSprite.bottom = y * Tile.TILE_SIZE
 
                     self.level.tile_sprite_list.append(tileSprite)
+        shark_x = random.randrange(0, self.width)
+        shark_y = random.randrange(0, self.height)
+
+        while self.level.tiles[shark_x + shark_y * self.width] != 0:
+            shark_x = random.randrange(0, self.width)
+            shark_y = random.randrange(0, self.height)
+
+        shark = Shark(shark_x * Tile.TILE_SIZE, shark_y * Tile.TILE_SIZE)
+        shark.texture = Textures.SPRITESHEET_16[16]
+
+        shark.level = self.level
+        self.level.sprite_list.append(shark)

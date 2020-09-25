@@ -68,6 +68,10 @@ class Level:
 
         self.world_mouse = self.camera.screen_to_world_space(self.mouse.x, self.mouse.y)
 
+        for i in range(8):
+            if self.keyboard.is_pressed(str(i)):
+                self.tile_type = i
+                break
 
         self.tile_cursor.center_x = self.ship.center_x - math.floor((self.ship.center_x - self.world_mouse[0] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
         self.tile_cursor.center_y = self.ship.center_y - math.floor((self.ship.center_y - self.world_mouse[1] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE

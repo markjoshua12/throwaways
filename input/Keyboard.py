@@ -33,6 +33,9 @@ class Keyboard:
         self.add_key("esc", arcade.key.ESCAPE)
         self.add_key("enter", arcade.key.ENTER)
 
+        for i in range(8):
+            self.add_key(str(i), arcade.key.KEY_0 + i)
+
     def on_key_press(self, key: int, modifiers: int):
         if self.key_codes_list.get(key):
             self.key_codes_list.get(key).pressed = True

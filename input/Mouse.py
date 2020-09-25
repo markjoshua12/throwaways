@@ -14,6 +14,16 @@ class Mouse:
 
         self.button = -1
 
+        self.scrolling_count = 0
+
+    def update(self):
+        if self.scrolling_count:
+            self.scrolling_count += 1
+            if self.scrolling_count > 8:
+                self.scroll_x = 0
+                self.scroll_y = 0
+                self.scrolling_count = 0
+
     def on_mouse_motion(self, x, y, dx, dy):
         self.x = x
         self.y = y
@@ -29,3 +39,4 @@ class Mouse:
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
         self.scroll_x = scroll_x
         self.scroll_y = scroll_y
+        self.scrolling_count = 1

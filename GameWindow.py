@@ -49,9 +49,9 @@ class GameWindow(arcade.Window):
 
     def on_update(self, delta):
 
-        if self.keyboard.is_pressed("zoom_in"):
+        if self.keyboard.is_pressed("zoom_in") or self.mouse.scroll_y > 0:
             self.camera.zoom(0.98)
-        elif self.keyboard.is_pressed("zoom_out"):
+        elif self.keyboard.is_pressed("zoom_out") or self.mouse.scroll_y < 0:
             self.camera.zoom(1/0.98)
 
         self.level.update(delta)
@@ -71,6 +71,8 @@ class GameWindow(arcade.Window):
                 
                 self.debug_time -= 1
                 self.frames = 0
+
+        self.mouse.update()
 
     def on_draw(self):
         arcade.start_render()

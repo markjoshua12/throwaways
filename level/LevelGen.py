@@ -6,6 +6,7 @@ from graphics import Textures
 
 from tiles import Tile
 
+from entity.Entity import Entity
 from entity.Shark import Shark
 
 class LevelGen:
@@ -28,7 +29,7 @@ class LevelGen:
 
     def generate_level(self):
 
-        self.level.tile_sprite_list = arcade.SpriteList()
+        self.level.tile_sprite_list = arcade.SpriteList(use_spatial_hash=True, spatial_hash_cell_size=8, is_static=True)
 
         for x in range(self.width):
             for y in range(self.height):
@@ -62,6 +63,7 @@ class LevelGen:
                     edgeIdx = Tile.TILE_EDGE_INDEX[edgeByte]
 
                     tileSprite = arcade.Sprite()
+                    tileSprite.tileId = tileId
 
                     tileSprite.texture = Textures.get_texture(5 - edgeIdx[0], tileId) #Tile.TILES[tileId].texture
                     tileSprite.angle = 90 * edgeIdx[1]
@@ -69,6 +71,21 @@ class LevelGen:
                     tileSprite.bottom = y * Tile.TILE_SIZE
 
                     self.level.tile_sprite_list.append(tileSprite)
+
+        for i in range(int(self.width * self.height * 0.1)):
+            tree_x = random.randrange(0, self.width)
+            tree_y = random.randrange(0, self.height)
+
+            if self.level.tiles[tree_x + tree_y * self.width] != 0:
+                tree = Entity(tree_x * Tile.TILE_SIZE, tree_y * Tile.TILE_SIZE)
+                tree.is_solid = True
+                # tree.center_x = tree_x * Tile.TILE_SIZE
+                # tree.center_y = tree_y * Tile.TILE_SIZE
+                tree.angle = random.randrange(0, 360)
+
+                tree.texture = Textures.SPRITESHEET_16[8]
+                self.level.sprite_list.append(tree)
+
         shark_x = random.randrange(0, self.width)
         shark_y = random.randrange(0, self.height)
 

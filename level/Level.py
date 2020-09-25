@@ -88,6 +88,15 @@ class Level:
 
         self.player.angle = player_angle
 
+        player_tile_x = int((self.player.center_x) // Tile.TILE_SIZE)
+        player_tile_y = int((self.player.center_y) // Tile.TILE_SIZE)
+
+        if self.get_tile(player_tile_x, player_tile_y) == 0:
+            self.player.texture = Textures.SPRITESHEET_16[3]
+            self.player_controller.move_speed = 1
+        else:
+            self.player.texture = Textures.SPRITESHEET_16[0]
+            self.player_controller.move_speed = 2
 
         self.sprite_list.update()
         self.ship_list.update()

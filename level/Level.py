@@ -76,6 +76,11 @@ class Level:
         self.tile_cursor.center_x = self.ship.center_x - math.floor((self.ship.center_x - self.world_mouse[0] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
         self.tile_cursor.center_y = self.ship.center_y - math.floor((self.ship.center_y - self.world_mouse[1] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
 
+        if self.mouse.button == 1:
+            self.ship.add_tile(self.world_mouse[0], self.world_mouse[1], self.tile_type)
+        elif self.mouse.button == 4:
+            self.ship.remove_tile(self.world_mouse[0], self.world_mouse[1])
+
         player_angle = math.degrees(math.atan2(
             self.world_mouse[1] - self.player.center_y,
             self.world_mouse[0] - self.player.center_x)
@@ -99,6 +104,7 @@ class Level:
         self.tile_sprite_list.draw(filter=gl.GL_NEAREST)
         self.ship_list.draw(filter=gl.GL_NEAREST)
         self.sprite_list.draw(filter=gl.GL_NEAREST)
+        self.effect_list.draw(filter=gl.GL_NEAREST)
 
         # draw_start = self.camera.screen_to_world_space(0, 0)
         # draw_start = (int(draw_start[0] / 8), int(draw_start[1] / 8))

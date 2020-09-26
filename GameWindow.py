@@ -14,6 +14,10 @@ WIDTH = 1024
 HEIGHT = 768
 TITLE = "Throwaways"
 
+LOADING = 2
+
+PLAYING = 1
+
 class GameWindow(arcade.Window):
 
     def __init__(self):
@@ -26,12 +30,14 @@ class GameWindow(arcade.Window):
     def setup(self):
         
         self.camera = Camera(WIDTH, HEIGHT)
-        self.camera.zoom(3/4)
+        self.camera.zoom(8)
 
         self.mouse = Mouse()
         self.keyboard = Keyboard()
 
         self.level = Level(self.camera, self.mouse, self.keyboard)
+
+        self.game_state = LOADING
 
         self.debug = True
 
@@ -48,6 +54,14 @@ class GameWindow(arcade.Window):
             # self.process = psutil.Process(os.getpid())
 
     def on_update(self, delta):
+
+        if self.game_state == LOADING:
+           
+            if self.camera.zoom_width > self.camera.width * 0.8:
+                self.camera.zoom(0.98)
+            else:
+                self.game_state = PLAYING
+
 
         if self.keyboard.is_pressed("zoom_in") or self.mouse.scroll_y > 0:
             self.camera.zoom(0.98)

@@ -84,6 +84,8 @@ class GameWindow(arcade.Window):
         # self.camera.reset_viewport()
         self.set_viewport(0, self.width * 0.5, 0, self.height * 0.5)
 
+        self.level.draw_gui()
+
         self.debug_text_list.draw(filter=gl.GL_NEAREST)
 
     def on_resize(self, width, height):

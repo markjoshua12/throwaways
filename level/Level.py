@@ -13,6 +13,8 @@ from entity.Player import Player
 from tiles import Tile
 from level.LevelGen import LevelGen
 
+from item.Inventory import Inventory
+
 PLAYER_MAX_SPEED = 80
 
 class Level:
@@ -62,6 +64,7 @@ class Level:
 
         self.player_controller = EntityController(self.player, self.mouse, self.keyboard)
 
+        self.inventory = Inventory()
 
         self.effect_list.append(self.player)
 
@@ -74,6 +77,7 @@ class Level:
         for i in range(8):
             if self.keyboard.is_pressed(str(i)):
                 self.tile_type = i
+                self.tile_cursor.texture = Textures.get_texture(i, 4)
                 break
 
         self.tile_cursor.center_x = self.ship.center_x - math.floor((self.ship.center_x - self.world_mouse[0] + 4) / Tile.TILE_SIZE) * Tile.TILE_SIZE
@@ -128,6 +132,9 @@ class Level:
         #         if tile != 0:
         #             pass
 
+    def draw_gui(self):
+        pass
+        # self.inventory.draw()
 
     def get_tile(self, x, y):
         if x < 0 or x >= self.width or y < 0 or y >= self.height:

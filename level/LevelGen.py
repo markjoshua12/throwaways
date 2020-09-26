@@ -28,10 +28,10 @@ class LevelGen:
 
         self.seed = seed
 
+        random.seed(self.seed)
+
         self.offsetx = random.randrange(1000000)
         self.offsety = random.randrange(1000000)
-
-        random.seed(self.seed)
 
     def generate_level(self):
 
@@ -78,19 +78,24 @@ class LevelGen:
 
                     self.level.tile_sprite_list.append(tileSprite)
 
-        for i in range(int(self.width * self.height * 0.1)):
+        for i in range(int(self.width * self.height * 0.05)):
             tree_x = random.randrange(0, self.width)
             tree_y = random.randrange(0, self.height)
 
             if self.level.tiles[tree_x + tree_y * self.width] != 0:
-                tree = None
-                if random.randint(0, 1):
-                    tree = Tree(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
-                else:
-                    tree = Stone(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
-                
-                tree.level = self.level
-                self.level.sprite_list.append(tree)
+                if self.level.tiles_top[tree_x + tree_y * self.width] == 0:
+                    tree = None
+                    
+                    if random.randint(0, 1):
+                        tree = Tree(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
+                        self.level.tiles_top[tree_x + tree_y * self.width] = 3
+                    else:
+                        tree = Stone(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
+                        self.level.tiles_top[tree_x + tree_y * self.width] = 4
+                    
+                    tree.level = self.level
+
+                    self.level.sprite_list.append(tree)
 
         shark_x = random.randrange(0, self.width)
         shark_y = random.randrange(0, self.height)

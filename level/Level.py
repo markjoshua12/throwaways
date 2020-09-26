@@ -29,6 +29,7 @@ class Level:
         self.height = 128
 
         self.tiles = [0] * self.width * self.height
+        self.tiles_top = [0] * self.width * self.height
 
         self.sprite_list = arcade.SpriteList(use_spatial_hash=True, spatial_hash_cell_size=32)
         self.ship_list = arcade.SpriteList(use_spatial_hash=True)
@@ -139,4 +140,6 @@ class Level:
     def get_tile(self, x, y):
         if x < 0 or x >= self.width or y < 0 or y >= self.height:
             return 0
-        return self.tiles[x + y * self.width]
+        idx = x + y * self.width
+
+        return self.tiles_top[idx] if self.tiles_top[idx] else self.tiles[idx]

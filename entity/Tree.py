@@ -3,6 +3,8 @@ import random
 
 from entity.Entity import Entity
 
+from graphics import Textures
+
 class Tree(Entity):
 
     def __init__(self, x, y):
@@ -12,6 +14,8 @@ class Tree(Entity):
         self.shake_count = 0
 
         self.health = 20
+        
+        self.texture = Textures.SPRITESHEET_16[8]
         
         self.angle = random.randrange(0, 360)
 

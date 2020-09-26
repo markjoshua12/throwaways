@@ -12,7 +12,7 @@ from entity.Tree import Tree
 
 class LevelGen:
 
-    def __init__(self, level):
+    def __init__(self, level, seed=0):
         self.level = level;
 
         self.width = level.width
@@ -25,8 +25,12 @@ class LevelGen:
         self.repeatx = self.width
         self.repeaty = self.height
 
-        self.offsetx = 0
-        self.offsety = 0
+        self.seed = seed
+
+        self.offsetx = random.randrange(1000000)
+        self.offsety = random.randrange(1000000)
+
+        random.seed(self.seed)
 
     def generate_level(self):
 

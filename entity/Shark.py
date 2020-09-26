@@ -31,3 +31,8 @@ class Shark(Mob):
             if entity != self and isinstance(entity, Mob):
                 self.target = entity
                 break
+
+    def walked_on(self, x, y, tile):
+        if tile != 0:
+            self.center_x -= self.change_x
+            self.center_y -= self.change_y

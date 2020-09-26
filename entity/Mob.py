@@ -24,6 +24,11 @@ class Mob(Entity):
         if self.change_y != 0:
             self.move(0, self.change_y)
 
+        tile_x = int(self.center_x // Tile.TILE_SIZE)
+        tile_y = int(self.center_y // Tile.TILE_SIZE)
+
+        self.walked_on(tile_x, tile_y, self.level.get_tile(tile_x, tile_y))
+
     def move(self, dx: float, dy: float):
         
         if dy != 0:
@@ -68,6 +73,11 @@ class Mob(Entity):
                     elif self.change_x < 0:
                         self.center_x = entity.center_x + self.width_2 + entity.width_2
                     self.collided(entity, dx, 0)
+    def attack(self):
+        pass
+
+    def walked_on(self, x, y, tile):
+        pass
 
     def collided(self, entity, dx, dy):
         if dx != 0:
@@ -75,7 +85,7 @@ class Mob(Entity):
         if dy != 0:
             self.change_y = 0
 
-    def hurt(self, damage, knockback):
+    def hurt(self, damage):
         if self.curr_invis_frame <= 0:
             self.health -= damage
             self.curr_invis_frame = self.invis_frame

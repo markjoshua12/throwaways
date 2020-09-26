@@ -18,6 +18,9 @@ class Ship(Entity):
         self.tiles = {}
         self.sprite_list = sprite_list
 
+        self.ship_speed_x = 0
+        self.ship_speed_y = 0
+
     def update(self):
 
         if self.change_x == 0 and self.change_y == 0:
@@ -98,10 +101,7 @@ class Ship(Entity):
         tile = self.tiles.pop(tile_pos, False)
 
         if tile:
-            self.sprite_list.remove(tile)
+            self.level.sprite_list.remove(tile)
+            # self.sprite_list.remove(tile)
 
         return tile
-
-    # def intersects(self, entity):
-    #     pass
-

@@ -83,7 +83,8 @@ class Ship(Entity):
         sprite = ShipPart(self, tile_pos[0], tile_pos[1], tileId)
 
         self.tiles[tile_pos] = sprite
-        self.sprite_list.append(sprite)
+        self.level.sprite_list.append(sprite)
+        # self.sprite_list.append(sprite)
 
         return True
 

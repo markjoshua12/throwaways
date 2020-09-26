@@ -38,8 +38,8 @@ class Camera:
         self.old_x = 0
         self.old_y = 0
 
-    def reset_viewport(self):
-        arcade.set_viewport(0, self.width, 0, self.height)
+    def reset_viewport(self, scale=1):
+        arcade.set_viewport(0, self.width * scale, 0, self.height * scale)
 
     def set_viewport(self):
         # Pixel perfect

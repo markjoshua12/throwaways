@@ -8,6 +8,7 @@ from tiles import Tile
 
 from entity.Entity import Entity
 from entity.Shark import Shark
+from entity.Tree import Tree
 
 class LevelGen:
 
@@ -77,13 +78,10 @@ class LevelGen:
             tree_y = random.randrange(0, self.height)
 
             if self.level.tiles[tree_x + tree_y * self.width] != 0:
-                tree = Entity(tree_x * Tile.TILE_SIZE, tree_y * Tile.TILE_SIZE)
-                tree.is_solid = True
-                # tree.center_x = tree_x * Tile.TILE_SIZE
-                # tree.center_y = tree_y * Tile.TILE_SIZE
-                tree.angle = random.randrange(0, 360)
+                tree = Tree(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
 
                 tree.texture = Textures.SPRITESHEET_16[8]
+                tree.level = self.level
                 self.level.sprite_list.append(tree)
 
         shark_x = random.randrange(0, self.width)

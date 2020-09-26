@@ -36,8 +36,8 @@ class GameWindow(arcade.Window):
         self.debug = True
 
         if self.debug:
-            import psutil
-            import os
+            # import psutil
+            # import os
 
             self.frames = 0
             self.debug_time = 0
@@ -45,7 +45,7 @@ class GameWindow(arcade.Window):
             self.debug_text = ""
             self.debug_text_list = TextList.create_text_list("Hello World!", 12, 12)
 
-            self.process = psutil.Process(os.getpid())
+            # self.process = psutil.Process(os.getpid())
 
     def on_update(self, delta):
 
@@ -62,7 +62,8 @@ class GameWindow(arcade.Window):
             self.debug_time += delta
 
             if self.debug_time >= 1:
-                self.debug_text = f"FPS: {self.frames} | Using: {round(self.process.memory_info().rss / 1000000, 2)} MB"
+                # self.debug_text = f"FPS: {self.frames} | Using: {round(self.process.memory_info().rss / 1000000, 2)} MB"
+                self.debug_text = f"FPS: {self.frames}"
 
                 print(self.debug_text)
 

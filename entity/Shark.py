@@ -15,7 +15,7 @@ class Shark(Mob):
         self.curr_target_delay = self.target_delay
 
         self.angle_rad = 0
-        self.move_speed = 0.5
+        self.move_speed = 0.8
 
         self.damage = 1
 
@@ -42,16 +42,30 @@ class Shark(Mob):
         else:
             self.curr_target_delay -= 1
 
+        if self.target:
+            if self.intersects(self.target):
+                self.target.hurt(self.damage)
+                self.curr_target_delay = self.target_delay * 2
+                self.target = None
+
+        self.texture = self.curr_anim.get_texture()
+        self.curr_anim.update()
+
         super().update()
 
     def look_for_target(self):
-
-        for entity in self.level.sprite_list:
-            if entity != self and isinstance(entity, Mob):
-                self.target = entity
-                break
+        self.target = self.level.player
+        # for entity in self.level.sprite_list:
+        #     if entity != self and isinstance(entity, Mob):
+        #         self.target = entity
+        #         break
 
     def walked_on(self, x, y, tile):
         if tile != 0:
-            self.center_x -= self.change_x
-            self.center_y -= self.change_y
+            # self.center_x -= self.change_x
+            # self.center_y -= self.change_y
+
+            self.change_x *= -1
+            self.change_y *= -1
+            
+            self.target = None

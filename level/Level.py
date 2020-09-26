@@ -90,6 +90,12 @@ class Level:
 
         player_tile_x = int((self.player.center_x) // Tile.TILE_SIZE)
         player_tile_y = int((self.player.center_y) // Tile.TILE_SIZE)
+        for entity in self.sprite_list:
+            if entity.removed:
+                self.sprite_list.remove(entity)
+                continue
+
+            entity.update()
 
         if self.get_tile(player_tile_x, player_tile_y) == 0:
             self.player.texture = Textures.SPRITESHEET_16[3]
@@ -98,7 +104,6 @@ class Level:
             self.player.texture = Textures.SPRITESHEET_16[0]
             self.player_controller.move_speed = 2
 
-        self.sprite_list.update()
         self.ship_list.update()
 
         if self.keyboard.is_pressed("attack"):

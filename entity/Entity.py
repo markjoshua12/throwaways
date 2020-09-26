@@ -21,6 +21,9 @@ class Entity(arcade.Sprite):
         self.width_2 = self.width / 2
         self.height_2 = self.height / 2
 
+        self.health = 5
+        self.removed = False
+
     def create_hit_box(self, width, height):
         self.set_hit_box(Maths.create_hit_box(width, height))
 
@@ -50,3 +53,9 @@ class Entity(arcade.Sprite):
         top = min(self.top, y + height)
 
         return left < right and bottom < top
+
+    def hurt(self, damage):
+        pass
+
+    def die(self):
+        self.removed = True

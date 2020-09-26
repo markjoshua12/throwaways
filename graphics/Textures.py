@@ -32,3 +32,11 @@ def get_texture(x, y, mirrored=False):
     if mirrored:
         tex.image = PIL.ImageOps.mirror(tex.image)
     return tex
+
+def get_texture_from_spritesheet(x, y, spritesheet, w, h, mirrored=False):
+    if x < 0 or y < 0 or x >= w or y >= h:
+        return
+    tex = spritesheet[x + y * w]
+    if mirrored:
+        tex.image = PIL.ImageOps.mirror(tex.image)
+    return tex

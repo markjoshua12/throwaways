@@ -35,3 +35,8 @@ class AnimatedSpriteManager:
     def reset(self):
         self.current_index = 0
         self.frame_counter = 0
+
+    def set_frame_speed(self, frame_speed):
+        self.frame_speed = frame_speed
+
+        self.frame_counter_len = self.frame_speed * len(self.textures)

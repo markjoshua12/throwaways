@@ -3,23 +3,31 @@ import arcade
 
 from entity.Mob import Mob
 
+from graphics.AnimatedSpriteManager import AnimatedSpriteManager
+
 class Shark(Mob):
 
     def __init__(self, x, y):
         super().__init__(x, y)
 
         self.target = None
-        self.target_delay = 0
+        self.target_delay = 24
         self.curr_target_delay = self.target_delay
 
         self.angle_rad = 0
         self.move_speed = 0.5
 
+        self.damage = 1
+
+        self.curr_anim = AnimatedSpriteManager(0, 2, 4)
+        self.curr_anim.set_frame_speed(8)
+
     def update(self):
 
-        if self.target is None:
-            self.look_for_target()
-        elif self.curr_target_delay <= 0:
+        if self.curr_target_delay <= 0:
+            if self.target is None:
+                self.look_for_target()
+
             diff_x = self.target.center_x - self.center_x
             diff_y = self.target.center_y - self.center_y
 

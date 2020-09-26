@@ -8,6 +8,7 @@ from entity.EntityController import EntityController
 from entity.Ship import Ship
 from entity.Entity import Entity
 from entity.Mob import Mob
+from entity.Player import Player
 
 from tiles import Tile
 from level.LevelGen import LevelGen
@@ -32,15 +33,14 @@ class Level:
         self.effect_list = arcade.SpriteList()
         self.tile_sprite_list = None
 
-        self.level_gen = LevelGen(self)
-
-        self.level_gen.generate_level()
-
-        self.player = Mob(self.width * 0.5 * Tile.TILE_SIZE, self.height * 0.5 * Tile.TILE_SIZE)
-        self.player.texture = Textures.SPRITESHEET_16[0]
+        self.player = Player(self.width * 0.5 * Tile.TILE_SIZE, self.height * 0.5 * Tile.TILE_SIZE)
         self.player.level = self
 
         self.sprite_list.append(self.player)
+
+        self.level_gen = LevelGen(self)
+
+        self.level_gen.generate_level()
 
         self.tile_cursor = arcade.Sprite()
         self.tile_cursor.texture = Textures.get_texture(0, 4)
@@ -61,6 +61,9 @@ class Level:
         self.world_mouse = (0, 0)
 
         self.player_controller = EntityController(self.player, self.mouse, self.keyboard)
+
+
+        self.effect_list.append(self.player)
 
     def update(self, delta):
         
@@ -88,8 +91,6 @@ class Level:
 
         self.player.angle = player_angle
 
-        player_tile_x = int((self.player.center_x) // Tile.TILE_SIZE)
-        player_tile_y = int((self.player.center_y) // Tile.TILE_SIZE)
         for entity in self.sprite_list:
             if entity.removed:
                 self.sprite_list.remove(entity)
@@ -97,12 +98,6 @@ class Level:
 
             entity.update()
 
-        if self.get_tile(player_tile_x, player_tile_y) == 0:
-            self.player.texture = Textures.SPRITESHEET_16[3]
-            self.player_controller.move_speed = 1
-        else:
-            self.player.texture = Textures.SPRITESHEET_16[0]
-            self.player_controller.move_speed = 2
 
         self.ship_list.update()
 

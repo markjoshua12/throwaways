@@ -9,6 +9,7 @@ from tiles import Tile
 from entity.Entity import Entity
 from entity.Shark import Shark
 from entity.Tree import Tree
+from entity.Stone import Stone
 
 class LevelGen:
 
@@ -82,9 +83,12 @@ class LevelGen:
             tree_y = random.randrange(0, self.height)
 
             if self.level.tiles[tree_x + tree_y * self.width] != 0:
-                tree = Tree(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
-
-                tree.texture = Textures.SPRITESHEET_16[8]
+                tree = None
+                if random.randint(0, 1):
+                    tree = Tree(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
+                else:
+                    tree = Stone(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
+                
                 tree.level = self.level
                 self.level.sprite_list.append(tree)
 

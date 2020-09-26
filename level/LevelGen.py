@@ -10,6 +10,7 @@ from entity.Entity import Entity
 from entity.Shark import Shark
 from entity.Tree import Tree
 from entity.Stone import Stone
+from entity.Goat import Goat
 
 class LevelGen:
 
@@ -96,6 +97,11 @@ class LevelGen:
                     tree.level = self.level
 
                     self.level.sprite_list.append(tree)
+
+                if random.random() < 0.2:
+                    goat = Goat(tree_x * Tile.TILE_SIZE + Tile.TILE_SIZE / 2, tree_y * Tile.TILE_SIZE + Tile.TILE_SIZE / 2)
+                    goat.level = self.level
+                    self.level.sprite_list.append(goat)
 
         shark_x = random.randrange(0, self.width)
         shark_y = random.randrange(0, self.height)

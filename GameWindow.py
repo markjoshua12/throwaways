@@ -79,7 +79,7 @@ class GameWindow(arcade.Window):
                 # self.debug_text = f"FPS: {self.frames} | Using: {round(self.process.memory_info().rss / 1000000, 2)} MB"
                 self.debug_text = f"FPS: {self.frames}"
 
-                print(self.debug_text)
+                # print(self.debug_text)
 
                 TextList.empty_text_list(self.debug_text_list)
                 TextList.add_to_text_list(self.debug_text, self.debug_text_list, 12, 12)

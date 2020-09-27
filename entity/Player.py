@@ -32,7 +32,9 @@ class Player(Mob):
             self.curr_anim = self.walk_anim
             self.move_speed = 1
 
-        if abs(self.change_x) > 0.2 or abs(self.change_y) > 0.2:
+        if self.curr_invis_frame > 0 and self.curr_invis_frame % 4 > 1:
+            self.texture = Textures.SPRITESHEET_16[63]
+        elif abs(self.change_x) > 0.2 or abs(self.change_y) > 0.2:
             self.curr_anim.update()
             self.texture = self.curr_anim.get_texture()
         elif self.swimming:
@@ -49,10 +51,10 @@ class Player(Mob):
                 continue
             if isinstance(entity, ShipPart):
                 self.swimming = False
-                if abs(self.change_x) < 0.5:
-                    self.change_x += entity.ship.change_x - self.change_x
-                if abs(self.change_y) < 0.5:
-                    self.change_y += entity.ship.change_y - self.change_y
+                # if abs(self.change_x) < 0.5:
+                self.change_x += entity.ship.change_x - self.change_x
+                # if abs(self.change_y) < 0.5:
+                self.change_y += entity.ship.change_y - self.change_y
                 break
 
     def attack(self):

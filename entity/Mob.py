@@ -10,8 +10,8 @@ class Mob(Entity):
         super().__init__(x, y)
 
         self.curr_invis_frame = 0
-        self.invis_frame = 12
-        self.health = 5
+        self.invis_frame = 24
+        self.health = 10
 
         self.move_speed = 2
 

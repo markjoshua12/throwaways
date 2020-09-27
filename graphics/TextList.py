@@ -27,8 +27,11 @@ class CharSprite(arcade.Sprite):
         super().__init__()
         self.character = character
 
-def create_text_list(str, x, y, bold = False):
+def create_text_list(str, x, y, bold = False, centered = False):
     list = arcade.SpriteList()
+
+    if centered:
+        x -= (len(str) * 8) / 2
 
     for i, char in enumerate(str):
         if char in CHARS_COMBINED:
@@ -45,7 +48,10 @@ def create_text_list(str, x, y, bold = False):
             list.append(char_sprite)
     return list
 
-def add_to_text_list(str, list, x, y):
+def add_to_text_list(str, list, x, y, centered = False):
+    if centered:
+        x -= (len(str) * 8) / 2
+        
     for i, char in enumerate(str):
         if char in CHARS_COMBINED:
             char_sprite = get_char_sprite(char)

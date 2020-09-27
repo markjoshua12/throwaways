@@ -11,7 +11,7 @@ SPRITESHEET_16 = arcade.load_spritesheet("res/spritesheet-16.png",
     16, 16, 8, 8 * 8)
 
 CHARS = arcade.load_spritesheet("res/chars.png", 6, 8, 27, 27 * 3)
-CHARS_BOLD = arcade.load_spritesheet("res/chars.png", 8, 8, 27, 27 * 3)
+CHARS_BOLD = arcade.load_spritesheet("res/chars-bold.png", 8, 8, 27, 27 * 3)
 
 for sprite in SPRITESHEET:
     sprite._hit_box_algorithm = "None"
